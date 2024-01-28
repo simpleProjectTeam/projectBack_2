@@ -1,8 +1,10 @@
 // app.js
 import express from "express";
 import pkg from 'pg';
-import bodyParser from "body-parser"; //이미지 값을 받아오기 위해 추가
+import cors from "cors";
 
+const app = express();
+const port = 3000;
 const { Pool } = pkg;
 
 // Postgres cluster hyun-diary-20240128 created
@@ -22,11 +24,13 @@ const pool = new Pool({
     port: 5432,
   });
 
-const app = express();
-const port = 3000;
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
 
-app.use(bodyParser.json()); //이미지 값을 받아오기 위해 추가
-app.use(bodyParser.urlencoded({ extended: true })); //이미지 값을 받아오기 위해 추가
+app.use(cors(corsOptions));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("TravelDiary Start!");
